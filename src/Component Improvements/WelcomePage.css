@@ -1,0 +1,17 @@
+main {
+
+    margin: 55px;
+    padding: 20%;
+    background-image: url(" /home/ivan/Bureau/4e_ANNEE/Semestre1/REACT_JS/biblio-main/src/assets/ensp-yaounde-1024x576.jpg ");
+    background-size: cover;
+    border-radius: 15px;
+    margin-top: 5%;
+    height: 75vh;
+}
+
+
+@media screen and (min-width: 280px) and (max-width: 1080px) {
+    main {
+        height: 70vh;
+    }
+}
