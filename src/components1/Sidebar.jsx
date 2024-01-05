@@ -1,6 +1,7 @@
 import React, { useState, useEffect,useContext } from "react";
 import styled from "styled-components";
 import { BsListUl } from "react-icons/bs";
+import { FaUser } from "react-icons/fa";
 import { GrCatalog } from "react-icons/gr";
 import { FaArchive } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
@@ -12,7 +13,7 @@ import { AiFillMessage } from "react-icons/ai";
 import scrollreveal from "scrollreveal";
 import { NavLink } from "react-router-dom";
 import { UserContext } from "../App";
-
+//import { IoIosArrowBack } from "react-icons/io";
 
 export default function Sidebar() {
   const [currentLink, setCurrentLink] = useState();
@@ -25,6 +26,11 @@ export default function Sidebar() {
   const changer =()=>{
     setCurrentLink(2)
     setSearchPage("etudiant")
+  }
+
+  const changerProfil =()=>{
+    setCurrentLink(10)
+  
   }
 
   const changerCat =()=>{
@@ -80,14 +86,16 @@ export default function Sidebar() {
     );
   }, []);
 
+ 
   return (
     <>
       <Section>
         <div className="top">
           <div className="brandSide">
+          
             <a href="/accueil">
                 <GiBookPile />
-                <span>E.N.S.P.Y</span>
+                <span>ENSPY</span>
             </a>
           </div>
           <div className="toggle">
@@ -104,6 +112,16 @@ export default function Sidebar() {
           </div>
           <div className="links">
             <ul>
+            <li
+                className={currentLink === 10 ? "active" : "none"}
+                onClick={() => changerProfil()}
+              >
+                <NavLink className="linkin" to="/profil" end>
+                <FaUser  />
+                  <span>Profil bibliothécaire</span>
+                </NavLink>
+              </li>
+              
             <li
                 className={currentLink === 6 ? "active" : "none"}
                 onClick={() => changerCat()}
@@ -139,7 +157,7 @@ export default function Sidebar() {
               >
                 <NavLink className="linkin"  to="/listeReservation" end>
                   <BsListUl />
-                  <span>Liste de reservations</span>
+                  <span>Liste de réservations</span>
                 </NavLink>
               </li>
               <li
@@ -148,7 +166,7 @@ export default function Sidebar() {
               >
                 <NavLink className="linkin" to="/emprunts" end>
                   <BsListUl />
-                  <span>Livres emprumtés</span>
+                  <span>Livres empruntés</span>
                 </NavLink>
               </li>
               <li
@@ -174,8 +192,7 @@ export default function Sidebar() {
         </div>
         <div className="logout">
           <NavLink className="linkin" to="/logoutPage">
-            <FiLogOut />
-            <span className="logout">Deconnexion</span>
+            <span className="logout"> <FiLogOut />  Déconnexion</span>
           </NavLink>
         </div>
       </Section>
@@ -217,7 +234,7 @@ export default function Sidebar() {
               >
                 <NavLink className="linkin"  to="/listeReservation" end>
                   <BsListUl />
-                  <span>Liste de reservations</span>
+                  <span>Liste de réservations</span>
                 </NavLink>
               </li>
               <li
@@ -226,7 +243,7 @@ export default function Sidebar() {
               >
                 <NavLink className="linkin" to="/emprunts" end>
                   <BsListUl />
-                  <span>Livres emprumtés</span>
+                  <span>Livres empruntés</span>
                 </NavLink>
               </li>
               
@@ -259,7 +276,7 @@ const Section = styled.section`
   left: 0;
   border-top-right-radius: 53px;
   border-bottom-right-radius: 53px;
-  background-color: #fff;
+   background-color: rgb(231, 218, 193);
   height: 100vh;
   width: 18vw;
   display: flex;
@@ -290,7 +307,7 @@ const Section = styled.section`
       span {
         font-size: 2rem;
         color: #fe7a3f;
-        font-family: "Permanent Marker", cursive;
+        font-weight:bold;
       }
     }
     .links {
@@ -315,6 +332,7 @@ const Section = styled.section`
             display: flex;
             gap: 1rem;
             color: grey;
+            font-weight:bold;
           }
         }
         .active{
@@ -330,6 +348,8 @@ const Section = styled.section`
   .logout {
     padding: 0.3rem 1rem;
     border-radius: 0.6rem;
+    font-weight:bold;
+    margin-bottom:20px;
     &:hover {
       background-color: #da0037;
       color: black;
@@ -377,7 +397,7 @@ const ResponsiveNav = styled.div`
   right: -10vw;
   top: 0;
   z-index: 10;
-  background-color: black;
+  background-color: rgb(231, 218, 193);
   height: 100vh;
   width: ${({ state }) => (state ? "60vh" : "0%")};
   transition: 0.4s ease-in-out;
@@ -396,7 +416,8 @@ const ResponsiveNav = styled.div`
         &:hover {
           background-color: #fe7a3f;
           .linkin {
-            color: black;
+            color: white;
+            font-weight:bold;
           }
         }
         .linkin {
@@ -404,7 +425,8 @@ const ResponsiveNav = styled.div`
           text-decoration: none;
           display: flex;
           gap: 1rem;
-          color: white;
+          color:black;
+         
         }
       }
       .active {

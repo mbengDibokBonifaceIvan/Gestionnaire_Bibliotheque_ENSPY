@@ -21,6 +21,7 @@ const Login = () => {
   };
 
   return (
+
     <div className="auth-form-container">
       <h2>Login</h2>
       <form className="login-form" onSubmit={handleSubmit}>
@@ -49,7 +50,7 @@ const Login = () => {
       </form>
       <button
         className="link-button"
-        onClick={() => navigate("/")}
+        onClick={() => navigate("/registrationValidation")}
       >
         Don't have an account? Register here.
       </button>

@@ -5,7 +5,8 @@ import { UserContext } from "../App";
 import firebase from '../metro.config'
 import ReactJsAlert from "reactjs-alert";
 import { doc, updateDoc, arrayUnion, arrayRemove,serverTimestamp,Timestamp  } from "firebase/firestore";
-
+import Sidebar from '../components1/Sidebar';
+import Navbar from '../components1/Navbar';
 
 export default function SendMess() {
 
@@ -68,6 +69,9 @@ const  res = async function(){
 
 
   return (
+    <>
+    <Sidebar />
+    <Navbar />
     <div>
       <Form ref={formRef} onSubmit={handleSubmit} className="rounded p-4 p-sm-3">
             <Form.Group className='mb-3' controlId='formBasicName'>
@@ -82,7 +86,7 @@ const  res = async function(){
                 <Form.Label className="labelForm">Entrer le message</Form.Label>
                 <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Message" name="exemplaire" value={message}  onChange={(e) => setMessage(e.target.value)}></textarea>
             </Form.Group> 
-            <button type='button' onClick={res} className='btn-btn-primary' style={{borderRadius:5,textAlign:'center', padding:10,color:'white',background:'#939af0'}}>Envoyer</button>
+            <button type='button' onClick={res} style={{display:'flex',borderRadius:5,textAlign:'center', padding:10,color:'white',background:'rgb(219, 153, 29)',width:100, fontWeight:"bold", textDecoration:"none"}}><a href="messages" style={{color:"black", textAlign:'center',textDecoration:"none"}}>Envoyer </a></button>
             <ReactJsAlert
                 status={status} // true or false
                 type={type} // success, warning, error, info
@@ -93,5 +97,6 @@ const  res = async function(){
             /> 
         </Form>
     </div>
+    </>
   );
 }

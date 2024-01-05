@@ -4,7 +4,8 @@ import React,{useState,useEffect} from "react";
 import { doc, updateDoc, arrayUnion, arrayRemove,serverTimestamp,Timestamp  } from "firebase/firestore";
 import styled from "styled-components";
 import Loading from "./Loading";
-
+import Sidebar from '../components1/Sidebar';
+import Navbar from '../components1/Navbar';
 
 
 
@@ -49,7 +50,7 @@ function Emprunts() {
  //update
  function updates(dos){
   const ref = firebase.firestore().collection("BiblioUser")
-  if( dos.etat == 'bloc'){
+  if( dos.etat === 'bloc'){
   ref
   .doc(dos.email)
   .update({etat:'ras'})
@@ -57,7 +58,7 @@ function Emprunts() {
     console.log(err)
   })}
 
-  if( dos.etat != 'bloc'){
+  if( dos.etat !== 'bloc'){
     ref
     .doc(dos.email)
     .update({etat:'bloc'})
@@ -118,7 +119,7 @@ function remis1(dos){
 const ref = firebase.firestore().collection("BiblioUser")
 const refArchive = firebase.firestore().collection("ArchivesBiblio")
 const refDoc = firebase.firestore().collection(dos.tabEtat1[1])
-if( dos.etat1 == 'emprunt'){
+if( dos.etat1 === 'emprunt'){
   ajouter(dos.name,dos.tabEtat1[0])
 ref
 .doc(dos.email)
@@ -141,7 +142,7 @@ refDoc
 function remis2(dos){
 const ref = firebase.firestore().collection("BiblioUser")
 const refDoc = firebase.firestore().collection(dos.tabEtat2[1])
-if( dos.etat2 == 'emprunt'){
+if( dos.etat2 === 'emprunt'){
   ajouter(dos.name,dos.tabEtat2[0])
 
 ref
@@ -165,7 +166,7 @@ refDoc
 function remis3(dos){
 const ref = firebase.firestore().collection("BiblioUser")
 const refDoc = firebase.firestore().collection(dos.tabEtat3[1])
-if( dos.etat3 == 'emprunt'){
+if( dos.etat3 === 'emprunt'){
   ajouter(dos.name,dos.tabEtat3[0])
 
 ref
@@ -186,23 +187,26 @@ refDoc
 }
 
     return (
+      <>
+      <Sidebar />
+      <Navbar />
       <Section>
         {loader ?
-      <Table striped bordered hover>
+      <Table striped bordered hover >
         <thead>
           <tr>
           <th>Id</th>
-          <th>Name</th>
+          <th>Nom</th>
             <th>Classe</th>
-            <th>Doc 1</th>
-            <th>Doc 2</th>
-            <th>Doc 3</th>
+            <th>Document 1</th>
+            <th>Document 2</th>
+            <th>Document 3</th>
             <th>Etat</th>
           </tr>
         </thead>
         <tbody>
         {data.map((doc, index) =>{
-          if(doc.etat1 =='emprunt' || doc.etat2 =='emprunt' || doc.etat3 =='emprunt')
+          if(doc.etat1 ==='emprunt' || doc.etat2 ==='emprunt' || doc.etat3 ==='emprunt')
           return (
         <tr key={doc.id}>
             <td>{index + 1}</td>
@@ -210,60 +214,60 @@ refDoc
             <td>{doc.niveau}</td>
             <td>
               <h4>
-              { doc.etat1 == 'emprunt' ?  doc.tabEtat1[0]+'\n' :'' }
+              { doc.etat1 === 'emprunt' ?  doc.tabEtat1[0]+'\n' :'' }
               </h4>
               <h6>
-              { doc.etat1 == 'emprunt' ?  doc.tabEtat1[5].slice(0,16)+'\n' :'' }
+              { doc.etat1 === 'emprunt' ?  doc.tabEtat1[5].slice(0,16)+'\n' :'' }
               </h6>
                 <div>
-                  { doc.etat1 == 'emprunt' ? 
+                  { doc.etat1 === 'emprunt' ? 
                       <Button
-                      style={{backgroundColor:'green'}}
-                          variant="secondary"
+                      style={{backgroundColor:'green', marginTop:'10px', fontWeight:'bold'}}
+                      variant="secondary"
                           className="btn-sm"
                           onClick={()=>{remis1(doc)}}
                         >
                         Remis
                         </Button>
-                        : ''}</div>
+                        : "Le document a déjà été remis."}</div>
             </td>
             <td>
               <h4>
-              { doc.etat2 == 'emprunt' ?  doc.tabEtat2[0]+'\n' :'' }
+              { doc.etat2 === 'emprunt' ?  doc.tabEtat2[0]+'\n' :'' }
               </h4>
               <h6>
-              { doc.etat2 == 'emprunt' ?  doc.tabEtat2[5].slice(0,16)+'\n' :'' }
+              { doc.etat2 === 'emprunt' ?  doc.tabEtat2[5].slice(0,16)+'\n' :'' }
               </h6>
                 <div>
-                  { doc.etat2 == 'emprunt' ? 
+                  { doc.etat2 === 'emprunt' ? 
                       <Button
-                      style={{backgroundColor:'green'}}
-                          variant="secondary"
+                      style={{backgroundColor:'green', marginTop:'10px', fontWeight:'bold'}}
+                      variant="secondary"
                           className="btn-sm"
                           onClick={()=>{remis2(doc)}}
                         >
                         Remis
                         </Button>
-                        : ''}</div>
+                        :  "Le document a déjà été remis."}</div>
             </td>
             <td>
               <h4>
-              { doc.etat3 == 'emprunt' ?  doc.tabEtat3[0]+'\n' :'' }
+              { doc.etat3 === 'emprunt' ?  doc.tabEtat3[0]+'\n' :'' }
               </h4>
               <h6>
-              { doc.etat3 == 'emprunt' ?  doc.tabEtat3[5].slice(0,16)+'\n' :'' }
+              { doc.etat3 === 'emprunt' ?  doc.tabEtat3[5].slice(0,16)+'\n' :'' }
               </h6>
                 <div>
-                  { doc.etat3 == 'emprunt' ? 
+                  { doc.etat3 === 'emprunt' ? 
                       <Button
-                      style={{backgroundColor:'green'}}
+                      style={{backgroundColor:'green', marginTop:'10px', fontWeight:'bold'}}
                           variant="secondary"
                           className="btn-sm"
                           onClick={()=>{remis3(doc)}}
                         >
                         Remis
                         </Button>
-                        : ''}</div>
+                        :  "Le document a déjà été remis."}</div>
             </td>
             
             
@@ -273,6 +277,7 @@ refDoc
         </tbody>
       </Table>: <Loading /> }
       </Section>
+      </>
     );
   }
   
@@ -280,4 +285,10 @@ refDoc
 
   const Section = styled.section`
   overflow:auto;
+  margin-top: 40px;
+  margin-bottom: 20px;
+
+  td, tr{
+    text-align: center;
+  }
 `

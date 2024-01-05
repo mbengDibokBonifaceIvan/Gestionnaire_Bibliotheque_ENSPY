@@ -24,8 +24,8 @@ import LogoutPage from "./Component Improvements/LogoutPage";
 import Login from "./Component Improvements/Login";
 import RegistrationValidation from "./Component Improvements/RegistrationValidation";
 import RegistrationConfirmation from "./Component Improvements/RegistrationConfirmation";
-
-
+import Pagenation from "./components1/pagination";
+import Profil from "./Component Improvements/Profil";
 
 export const UserContext = createContext();
 
@@ -64,13 +64,15 @@ export default function App() {
       <UserContext.Provider value={{ searchPage, setSearchPage, searchWord, setSearchWord, messages, setMessages, email, setEmail, nom, setNom }}>
         <Div>
           <Router>
-            <Sidebar />
+
             <Section>
-              <Navbar />
+
               <Routes>
-                <Route path="/" element={< RegistrationValidation />} />
+                <Route path="/" element={< Login />} />
                 <Route path="/registrationConfirmation" element={< RegistrationConfirmation />} />
-                <Route path="/login" element={<Login />} />
+                <Route path="/registrationValidation" element={<RegistrationValidation />} />
+
+                <Route path="/profil" element={<Profil />} />
                 <Route path="/accueil" element={<Accueil />} />
                 <Route path="/listeEtudiant" element={<ListeEtudiants />} />
                 <Route path="/ajouterDoc" element={<AjoutDoc />} />
@@ -83,6 +85,7 @@ export default function App() {
                 <Route path="/archives" element={<Archives />} />
                 <Route path="/discuss" element={<Discussion />} />
                 <Route path="/logoutPage" element={<LogoutPage />} />
+                <Route path="/pagenation" element={<Pagenation />} />
                 <Route path="*" element={<NoPage />} />
               </Routes>
             </Section>

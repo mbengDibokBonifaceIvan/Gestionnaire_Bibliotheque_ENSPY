@@ -6,7 +6,8 @@ import firebase from '../metro.config'
 import { UserContext } from "../App";
 import { GiTriquetra } from "react-icons/gi";
 import Loading from "./Loading";
-
+import Sidebar from '../components1/Sidebar';
+import Navbar from '../components1/Navbar';
 
 export default function Messages(){
 
@@ -66,13 +67,16 @@ export default function Messages(){
 
 
     return(
+         <>
+    <Sidebar />
+    <Navbar />
         <Section>
-            <div className="mess">Messages</div>
+            <div className="mess">Historique des discussions</div>
             {loader ?
             <>
             <div className="header-mess">
                 <div className="header-name">Noms</div>
-                <div className="header-me">Texte</div>
+                <div className="header-me">Messages les plus récents</div>
                 </div>
             {data.map((msg, index) =>{
                 if(1){
@@ -87,20 +91,28 @@ export default function Messages(){
             )} }
             )}
             </>: <Loading /> }
-            <NavLink onClick={()=>newMessage()} className="new-message-link" to="/sendMessage" end>
-            <div className="new-message"><span>+</span></div>
+            <NavLink onClick={()=>newMessage()} className="new-message-link" to="/sendMessage" end> 
+           <div className="new-message"><span>+</span></div>
             </NavLink>
-        </Section>
+
+            <NavLink to="/accueil" className="home"style={{display:'flex',borderRadius:5,textAlign:'center', padding:10,color:'white',background:'rgb(219, 153, 29)',width:100, fontWeight:"bold", textDecoration:"none"}}>
+            Aller à Accueil
+            </NavLink>
+             </Section>
+             </>
     );
 }
 
 const Section = styled.section`
-    margin-top: 30px;
+    margin-top: 40px;
     .mess{
         color: black;
         text-align: center;
         font-size:40px;
         margin-bottom: 20px;
+        text-decoration:underline;
+        border: 2px solid black;
+        
     }
 
 
@@ -128,6 +140,7 @@ const Section = styled.section`
     }
      .horizon-div{
         display:flex;
+        margin-top: 10px;
         
         a{
             display:flex;
@@ -162,7 +175,7 @@ const Section = styled.section`
         }
         &:hover {
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.322);
-            background-color: white;
+            background-color: transparent;
             border-radius:10px;
         }
 
@@ -173,11 +186,26 @@ const Section = styled.section`
         border-radius:10px;
     }
 
+    .home{
+        display: flex;
+        position: fixed;
+        background-color: rgb(219, 153, 29);
+        color: white;
+        width:50px;
+        height: 50px;
+        bottom: 50px;
+    
+        border-radius:30px;
+        z-index: 5;
+        justify-content: center;
+        align-items: center;
+        transition: 0.5s ease-in-out;
+    }
     .new-message-link{
         .new-message{
             display: flex;
             position: fixed;
-            background-color: #939af0;
+            background-color: rgb(219, 153, 29);
             color: white;
             width:50px;
             height: 50px;
