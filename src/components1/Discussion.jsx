@@ -6,6 +6,8 @@ import { FaArchive } from "react-icons/fa";
 import firebase from '../metro.config'
 import { arrayUnion,Timestamp  } from "firebase/firestore";
 import Loading from "./Loading";
+import Sidebar from '../components1/Sidebar';
+import Navbar from '../components1/Navbar';
 
 export default function  Discussion(){
 
@@ -75,6 +77,9 @@ export default function  Discussion(){
 
 
     return(
+      <>
+      <Sidebar />
+      <Navbar />
       <div>
         {
           email.length!=0?
@@ -100,6 +105,7 @@ export default function  Discussion(){
         </div> :<div></div>
         }
         </div>
+        </>
     );
 }
 

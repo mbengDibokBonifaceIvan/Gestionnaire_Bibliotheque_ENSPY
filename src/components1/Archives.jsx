@@ -4,6 +4,8 @@ import firebase from '../metro.config';
 import styled from "styled-components";
 import { UserContext } from "../App";
 import Loading from "./Loading";
+import Sidebar from '../components1/Sidebar';
+import Navbar from '../components1/Navbar';
 
 function Archives() {
 
@@ -39,15 +41,16 @@ function Archives() {
 
 
     return (
+      <>
+      <Sidebar />
+      <Navbar />
       <Section>
         {loader ? 
-      <Table striped bordered hover>
+      <Table striped bordered hover variant="dark">
         <thead>
           <tr>
             <th>Id</th>
-            <th>Name</th>
-            
-            
+            <th>Nom du client</th>     
             <th>Nom du document</th>
             <th>Date de remise</th>
             <th>Statut</th>
@@ -75,6 +78,7 @@ function Archives() {
         </tbody>
       </Table> : <Loading /> }
       </Section>
+      </>
     );
   }
   
@@ -82,4 +86,10 @@ function Archives() {
 
   const Section = styled.section`
     overflow:auto;
+    margin-top: 40px;
+    margin-bottom: 20px;
+  
+    td, tr{
+      text-align: center;
+    }
   `

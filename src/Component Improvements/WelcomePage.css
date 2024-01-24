@@ -1,13 +1,48 @@
 main {
 
-    margin: 55px;
+    margin: 5px;
     padding: 20%;
-    background-image: url(" /home/ivan/Bureau/4e_ANNEE/Semestre1/REACT_JS/biblio-main/src/assets/ensp-yaounde-1024x576.jpg ");
+    background-image: url("../assets/bio.webp");
     background-size: cover;
     border-radius: 15px;
-    margin-top: 5%;
+    
     height: 75vh;
 }
+main>button{
+    width: 200px;
+    height: 150px;
+    background-color: rgb(235, 96, 46);
+    color: white;
+    border-radius: 25px;
+    margin-top: 3%;
+    
+    margin-left: -5%;
+}
+main p{
+    font-size: 20px;
+    margin-top: -25%; 
+}
+main :nth-child(2){
+    margin-top: 2%;
+}
+main button :hover{
+    background-color: aliceblue;
+    transform: scale(1.1);
+    opacity: 1;
+}
+main :nth-child(4){
+    width: 200px;
+    height: 150px;
+    background-color: rgb(235, 96, 46);
+    color: white;
+    margin-left: 215px;
+    
+
+    
+    
+    
+}
+
 
 
 @media screen and (min-width: 280px) and (max-width: 1080px) {

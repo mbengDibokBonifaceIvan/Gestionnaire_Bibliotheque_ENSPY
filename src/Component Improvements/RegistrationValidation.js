@@ -23,7 +23,7 @@ const RegistrationValidation = () => {
         if (!name || !email || !password || !confirmPassword) {
             setValidationError("Please fill in all the fields");
         } else if (password !== confirmPassword) {
-            setValidationError("Passwords do not match");
+            setValidationError("Password does not match");
         } else {
             setValidationError("");
             navigate("/registrationConfirmation");
@@ -34,6 +34,7 @@ const RegistrationValidation = () => {
     const navigate = useNavigate();
 
     return (
+
         <div className="registration-validation-container">
             <h2>Registration Validation</h2>
             <form className="registration-validation-form" onSubmit={handleSubmit}>
@@ -73,7 +74,7 @@ const RegistrationValidation = () => {
                     <p className="error-message">{validationError}</p>
                 )}
                 <button type="submit" className="submit-button" >Validate Registration</button>
-                <button className="link-btn" onClick={() => navigate("/login")}>Already have an account? Login here.</button>
+                <button className="link-btn" onClick={() => navigate("/")}>Already have an account? Login here.</button>
 
             </form>
         </div>

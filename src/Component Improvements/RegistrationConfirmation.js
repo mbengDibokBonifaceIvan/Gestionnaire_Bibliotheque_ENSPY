@@ -27,7 +27,7 @@ const RegistrationConfirmation = () => {
                     <h2>Registration Successful!</h2>
                     <p>Your registration has been successfully completed.</p>
                     <p>Thank you for joining us!</p>
-                    <Link to="/login" className="login-link">
+                    <Link to="/" className="login-link">
                         Go to Login
                     </Link>
                 </div>

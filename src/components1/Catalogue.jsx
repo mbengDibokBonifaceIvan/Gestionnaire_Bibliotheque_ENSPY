@@ -6,10 +6,13 @@ import { UserContext } from "../App";
 import Modal from 'react-modal';
 import ReactJsAlert from "reactjs-alert";
 import { GrFormClose } from "react-icons/gr";
+import Pagination from "react-bootstrap/Pagination";
 
 import Loading from "./Loading";
 
 
+import Sidebar from '../components1/Sidebar';
+import Navbar from '../components1/Navbar';
 
 export default function Catalogue() {
 
@@ -149,7 +152,7 @@ const  resUdapte = async function(){
   })
   setStatus(true);
   setType("success");
-  setTitle("Document ajouté avec succes");
+  setTitle("Document ajouté avec succès");
   setIsOpens(false);
 
  }
@@ -171,6 +174,9 @@ const  deleteDoc = async function(){
 
 
   return (
+<>
+    <Sidebar />
+    <Navbar />
     <Section>
       {loader ? ( data.map((doc, index) =>{
        if(doc.name.toUpperCase().includes(searchWord.toUpperCase())){
@@ -178,8 +184,8 @@ const  deleteDoc = async function(){
       <div className="analytic " key={index}>
         <div className="content" onClick={()=>openModal(doc)}>
           <h3>{doc.name}</h3>
-          <h5>S : {doc.salle}</h5>
-          <h6>exemplaire: {doc.exemplaire}</h6>
+          <h5>Numéro de salle : {doc.salle}</h5>
+          <h6>Exemplaire disponible: {doc.exemplaire}</h6>
         </div>
         <div className="logo">
         <a href={doc.image}>
@@ -211,18 +217,18 @@ const  deleteDoc = async function(){
                     <option value='Mathematique'>Mathematique</option>
                     <option value='Physique'>Physique</option>
                     <option value='Chimie'>Chimie</option>
-                    <option value='Genie Informatique'>Genie Informatique</option>
-                    <option value="Genie Civile">Genie Civile</option>
-                    <option value='Genie Electrique'>Genie Electrique </option>
-                    <option value='Genie Mecanique'>Genie Mecanique </option>
-                    <option value='Genie Telecom'>Genie telecom </option>
-                    <option value='Genie Electrique'>Genie electrique </option>
-                    <option value='Memoire GI'>Memoire Genie Informatique </option>
-                    <option value='Memoire GC'>Memoire Genie Civile </option>
-                    <option value='Memoire GELE '>Memoire Genie Electrique </option>
-                    <option value='Memoire GET'>Memoire Genie Telecom </option>
-                    <option value='Memoire GIndus'>Memoire Genie Industriel </option>
-                    <option value='Memoire GM'>Memoire Genie Mecanique </option>
+                    <option value='Génie Informatique'>Génie Informatique</option>
+                    <option value="Génie Civile">Génie Civile</option>
+                    <option value='Génie Electrique'>Génie Electrique </option>
+                    <option value='Génie Mecanique'>Génie Mecanique </option>
+                    <option value='Génie Telecom'>Génie telecom </option>
+                    <option value='Génie Electrique'>Génie electrique </option>
+                    <option value='Memoire GI'>Memoire Génie Informatique </option>
+                    <option value='Memoire GC'>Memoire Génie Civile </option>
+                    <option value='Memoire GELE '>Memoire Génie Electrique </option>
+                    <option value='Memoire GET'>Memoire Génie Telecom </option>
+                    <option value='Memoire GIndus'>Memoire Génie Industriel </option>
+                    <option value='Memoire GM'>Memoire Génie Mecanique </option>
                 </select>
                 <label className="labelForm" style={labelForm} htmlFor="salle">Entrer son nouveau numero de salle</label>
                 <select style={labelInput} id="salle" type="text" placeholder="Nouvelle salle..." name="salle" value={salle}  onChange={(e) => setSalle(e.target.value)}>
@@ -232,7 +238,7 @@ const  deleteDoc = async function(){
                     <option value='3'>3</option>
                     <option value='4'>4</option>
                 </select>
-                <label className="labelForm" style={labelForm} htmlFor="etagere">Entrer etagere</label>
+                <label className="labelForm" style={labelForm} htmlFor="etagere">Entrer la position de l'étagere</label>
                 <input style={labelInput} id="etagere" type="text" placeholder="Nouvelle etagère..." name="etagere" value={etagere} onChange = {(e) => setEtagere(e.target.value)} /> 
                 <label className="labelForm" style={labelForm} htmlFor="desc">Entrer la nouvelle description</label>
                 <textarea style={labelInput} id="etagere" type="desc" placeholder="Nouvelle description..." name="description" value={desc} onChange = {(e) => setDesc(e.target.value)} />       
@@ -251,13 +257,26 @@ const  deleteDoc = async function(){
         </form>
                 </Modal>
             </div>
+            <Pagination className="pagination justify-content-center">
+     <Pagination.Prev />
+     <Pagination.Item>{1}</Pagination.Item>
+     <Pagination.Item>{2}</Pagination.Item>
+     <Pagination.Item>{3}</Pagination.Item>
+     <Pagination.Item>{4}</Pagination.Item>
+     <Pagination.Item>{5}</Pagination.Item>
+     <Pagination.Item>{6}</Pagination.Item>
+
+     <Pagination.Item>{7}</Pagination.Item>
+     <Pagination.Next />
+ </Pagination>
     </Section>
+    </>    
   );
 }
 const Section = styled.section`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0.5rem;
+  gap: 1rem;
   background-color:#ececec;
   overflow-x:auto;
   .analytic {

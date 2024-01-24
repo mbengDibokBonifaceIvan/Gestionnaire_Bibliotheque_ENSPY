@@ -8,6 +8,8 @@ import { GrFormClose } from "react-icons/gr";
 import {Table, Button} from 'react-bootstrap';
 import Loading from "./Loading";
 
+import Sidebar from '../components1/Sidebar';
+import Navbar from '../components1/Navbar';
 
 
 export default function ListeEtudiants() {
@@ -142,17 +144,23 @@ const [email, setEmail] = useState('')
 
 
   return (
+
+    <>
+    <Sidebar />
+    <Navbar />
     <Section>
       {loader ? 
-      <Table striped bordered hover>
+      <div className="table">
+      <Table striped bordered hover variant="green">
         <thead>
           <tr>
-            <th>Image</th>
-            <th>Name</th>
+            <th>Photo de profil</th>
+            <th>Nom</th>
             <th>Classe</th>
             <th>Matricule</th>
             <th>Téléphone</th>
-            <th>Bloquer</th>
+            <th>Statut</th>
+            <th>Action possible</th>
           </tr>
         </thead>
         <tbody>
@@ -162,21 +170,21 @@ const [email, setEmail] = useState('')
           <tr key={index + 1}>
             <td>
               <a href={etudiant.image} alt='profil'>
-                <img src={etudiant.image} className="img-pfl" />
+                <img src={etudiant.image} className="img-pfl" alt="profil"/>
               </a>  
             </td>
             <td onClick={()=>openModal(etudiant)} style={{cursor:'pointer'}}>{etudiant.name}</td>
             <td onClick={()=>openModal(etudiant)} style={{cursor:'pointer'}}> {etudiant.niveau}</td>
             <td onClick={()=>openModal(etudiant)} style={{cursor:'pointer'}}>{etudiant.matricule}</td>
-            <td onClick={()=>openModal(etudiant)} style={{cursor:'pointer'}}>{etudiant.etat}</td>
             <td onClick={()=>openModal(etudiant)} style={{cursor:'pointer'}}>{etudiant.tel}</td>
+            <td onClick={()=>openModal(etudiant)} style={{cursor:'pointer'}}>{etudiant.etat}</td>
             <td>
               <div className="btn-bloc-etudiant">
                 <a
                     onClick={()=>{updates(etudiant)}}
-                    style={{color:'white', backgroundColor: etudiant.etat == 'bloc' ? 'red' : 'green' }}
+                    style={{color:'white', backgroundColor: etudiant.etat == 'bloc' ? 'red' : 'green', fontWeight:"bold" }}
                   >
-                  {etudiant.etat == 'bloc' ? 'debloc' : 'bloc'}
+                  {etudiant.etat === 'bloc' ? 'Débloquer' : 'Bloquer'}
                 </a>
               </div>
             </td>
@@ -184,7 +192,9 @@ const [email, setEmail] = useState('')
           </tr>
          )} })}
         </tbody>
-      </Table> : <Loading /> }
+      </Table> 
+      </div>
+      : <Loading /> }
         
       <div className="resp-modal">
                 <Modal
@@ -195,7 +205,7 @@ const [email, setEmail] = useState('')
                     contentLabel="Example Modal"
                 >
                   <a onClick={closeModal} style={closeStyle}><GrFormClose /></a>
-                  <h2 ref={(_subtitle) => (subtitle = _subtitle)}>{name}</h2>
+                  <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Informations personnelles sur l'étudiant: {name}</h2>
                   <div style={modalDiv}>
                       <div>
                         <img style={imgP} src={image} alt="profil" />
@@ -204,6 +214,7 @@ const [email, setEmail] = useState('')
                        <span>  Matricule : {matricule} </span>
                        <span>  Classe : {niveau} </span>
                        <span>  Téléphone : {tel} </span>
+                       <span>  Statut : {stat} </span>
                       </div>
                   </div>
                   
@@ -212,6 +223,7 @@ const [email, setEmail] = useState('')
 
 
     </Section>
+    </>
   );
 }
 const Section = styled.section`
@@ -223,8 +235,18 @@ overflow:auto;
 }
 .btn-bloc-etudiant a{
   padding:8px;
-  border-radius:2px;
+  border-radius:10px;
   cursor:pointer; 
+}
+
+.btn-bloc-etudiant{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.table{
+  margin-top: 40px;
+  margin-bottom: 20px;
 }
 th, td{
   text-align: center;
