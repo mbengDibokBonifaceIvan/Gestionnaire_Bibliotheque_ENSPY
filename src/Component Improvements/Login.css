@@ -1,11 +1,25 @@
+.log{
+    background-image: url(../assets/bio.webp);
+    background-size:cover;
+    
+}
+.log>h1{
+    margin-top: 2%;
+    margin-left: 250px; 
+    
+    
+}
+
 .auth-form-container {
     max-width: 400px;
     margin: 0 auto;
     padding: 20px;
-    background-color: rgb(231, 218, 193);
+    background-color: white;
     border-radius: 5px;
-    margin-top: 180px;
+    margin-top: 5%;
     margin-left: 300px;
+    margin-bottom: 10%;
+    
 }
 
 h2 {
@@ -30,6 +44,7 @@ h2 {
     margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 3px;
+    background-color: #ccc;
 }
 
 .error-message {
@@ -75,4 +90,10 @@ h2 {
         margin-top: 180px;
     }
 
+}
+@media screen and (min-width: 1000px) and (max-width: 4080px) {
+    .body{
+        background-image: url(../assets/bio.webp);
+        background-size:cover;
+    }
 }

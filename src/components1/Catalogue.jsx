@@ -10,11 +10,16 @@ import Pagination from "react-bootstrap/Pagination";
 
 import Loading from "./Loading";
 
+import { useLocation } from 'react-router-dom';
 
 import Sidebar from '../components1/Sidebar';
 import Navbar from '../components1/Navbar';
 
 export default function Catalogue() {
+  const location = useLocation();
+  const { state } = location;
+  const departement = location.state.departement;
+ // const  departement  = state ? state.departement: null;
 
   //Modal 2
 const [modalIsOpens, setIsOpens] = useState(false);
@@ -113,7 +118,7 @@ const formRef = useRef()
  
    
     function getData(){
-     ref.onSnapshot((querySnapshot) => {
+     ref.where('cathegorie', '==', departement).onSnapshot((querySnapshot) => {
        const items = []
        querySnapshot.forEach((doc) => {
          items.push(doc.data())
@@ -177,14 +182,16 @@ const  deleteDoc = async function(){
 <>
     <Sidebar />
     <Navbar />
+    <h1 style={{textAlign: 'center', color: 'gray', marginTop:'10px', marginBottom:'20px' }}>Liste des Livres du {departement}</h1>
     <Section>
+    
       {loader ? ( data.map((doc, index) =>{
        if(doc.name.toUpperCase().includes(searchWord.toUpperCase())){
         return(
       <div className="analytic " key={index}>
         <div className="content" onClick={()=>openModal(doc)}>
           <h3>{doc.name}</h3>
-          <h5>Numéro de salle : {doc.salle}</h5>
+          <h6>Departement : {doc.cathegorie}</h6>
           <h6>Exemplaire disponible: {doc.exemplaire}</h6>
         </div>
         <div className="logo">
