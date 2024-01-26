@@ -21,7 +21,8 @@ const Login = () => {
   };
 
   return (
-
+<div className="log">
+    <h1><span style={{color:'black'}}>Welcome to</span> <span style={{color:'orangered'}}>BIBIO ENSPY</span></h1>
     <div className="auth-form-container">
       <h2>Login</h2>
       <form className="login-form" onSubmit={handleSubmit}>
@@ -55,6 +56,7 @@ const Login = () => {
         Don't have an account? Register here.
       </button>
     </div>
+  </div>
   );
 };
 

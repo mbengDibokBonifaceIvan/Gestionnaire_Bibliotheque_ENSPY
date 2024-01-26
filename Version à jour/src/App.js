@@ -26,6 +26,9 @@ import RegistrationValidation from "./Component Improvements/RegistrationValidat
 import RegistrationConfirmation from "./Component Improvements/RegistrationConfirmation";
 import Pagenation from "./components1/pagination";
 import Profil from "./Component Improvements/Profil";
+import Cat from "./Component Improvements/catlivre";
+import Dept from "./Component Improvements/AdminBooksHome";
+import AdminMemoriesHome from "./components1/AdminMemoriesHome";
 
 export const UserContext = createContext();
 
@@ -68,9 +71,12 @@ export default function App() {
             <Section>
 
               <Routes>
+                <Route path="/gestlivre" element={<Cat/>}/>
+                <Route path="/departement" element={<Dept/>} />
                 <Route path="/" element={< Login />} />
                 <Route path="/registrationConfirmation" element={< RegistrationConfirmation />} />
                 <Route path="/registrationValidation" element={<RegistrationValidation />} />
+                <Route path="/gestmemoire" element={<AdminMemoriesHome />}/>
 
                 <Route path="/profil" element={<Profil />} />
                 <Route path="/accueil" element={<Accueil />} />

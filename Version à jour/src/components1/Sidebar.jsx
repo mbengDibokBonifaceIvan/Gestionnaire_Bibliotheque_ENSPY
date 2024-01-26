@@ -33,6 +33,10 @@ export default function Sidebar() {
   
   }
 
+  const changerAc =()=>{
+    setCurrentLink(14)
+  }
+
   const changerCat =()=>{
     setCurrentLink(6)
     setSearchPage("document")
@@ -113,6 +117,20 @@ export default function Sidebar() {
           <div className="links">
             <ul>
             <li
+                className={currentLink === 14 ? "active" : "none"}
+                onClick={() => changerAc()}
+              >
+                <NavLink className="linkin" to="/accueil" end>
+                  <GrCatalog />
+                  
+                    <span>Accueil</span>
+               
+                  
+               </NavLink>
+              </li>
+              
+
+            <li
                 className={currentLink === 10 ? "active" : "none"}
                 onClick={() => changerProfil()}
               >
@@ -120,7 +138,7 @@ export default function Sidebar() {
                 <FaUser  />
                   <span>Profil bibliothécaire</span>
                 </NavLink>
-              </li>
+             </li>
               
             <li
                 className={currentLink === 6 ? "active" : "none"}
@@ -131,6 +149,7 @@ export default function Sidebar() {
                   <span>Catalogue</span>
                 </NavLink>
               </li>
+              
               <li
                 className={currentLink === 2 ? "active" : "none"}
                 onClick={() =>changer()}
@@ -166,7 +185,7 @@ export default function Sidebar() {
               >
                 <NavLink className="linkin" to="/emprunts" end>
                   <BsListUl />
-                  <span>Livres empruntés</span>
+                  <span>Documents empruntés</span>
                 </NavLink>
               </li>
               <li
