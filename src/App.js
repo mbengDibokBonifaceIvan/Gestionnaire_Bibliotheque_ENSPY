@@ -29,7 +29,7 @@ import Profil from "./Component Improvements/Profil";
 //import catlivre from "./Component Improvements/catlivre";
 import Cat from "./Component Improvements/catlivre";
 import Dept from "./Component Improvements/AdminBooksHome";
-
+import Timer1 from "./Component Improvements/Timer1";
 export const UserContext = createContext();
 
 export default function App() {
@@ -91,6 +91,7 @@ export default function App() {
                 <Route path="/discuss" element={<Discussion />} />
                 <Route path="/logoutPage" element={<LogoutPage />} />
                 <Route path="/pagenation" element={<Pagenation />} />
+                <Route path="/timer1" element={<Timer1 />} />
                 <Route path="*" element={<NoPage />} />
               </Routes>
             </Section>

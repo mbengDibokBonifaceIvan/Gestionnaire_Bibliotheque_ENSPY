@@ -6,7 +6,7 @@ import img1 from '../assets/Batiment-polytech-cmr.jpg';
 
 
 
-export default function DepartementBooksBtn() {
+export default function DepartementBooksBtn(nom_du_departement) {
   const [isHovered, setIsHovered] = useState(false);
   const navigate = useNavigate();
 
@@ -28,7 +28,7 @@ export default function DepartementBooksBtn() {
     setIsHovered(false);
   };
 
-  const nom_du_departement = "Genie";
+ 
 
   const cardStyle = {
     backgroundImage: `url(${img1})`,
