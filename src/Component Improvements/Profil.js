@@ -13,13 +13,17 @@ import Navbar from '../components1/Navbar';
 import { margin } from "@mui/system";
 
 export default function Profil(props) {
-    //   const [email, setEmail] = useState('');
+
     const [name, setName] = useState('')
+    const [Email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+
     const [catégorie, setCatégorie] = useState('')
     const [cathegorie, setCathegorie] = useState('');
     const [desc, setDesc] = useState('')
     const [etagere, setEtagere] = useState('')
-    const [Email, setEmail] = useState("")
+   
     const [image, setImage] = useState(null)
     const [pdf, setPdf] = useState(null)
     const [url, setUrl] = useState(null)
@@ -149,18 +153,40 @@ export default function Profil(props) {
       })
     }*/
 
+
+// Update user'profil
+
+    // Add a new document in collection "cities" with ID 'LA'
+    const Update_profil = async function () {
+
+        //On va creer une collection bibliothecaire sur firebse pour stocker les differensts bibliothecaires enregistres par le super utilisateur
+        await firebase.firestore().collection('Bibliothecaires').user(name).set({
+            name: name,
+            Email: (Email),
+           password: password,
+            commentaire: [
+                {
+                    heure: new Date(),
+                    nomUser: '',
+                    texte: '',
+                    note: 0
+                }
+            ]
+        })
+        setStatus(true);
+        setType("success");
+        setTitle("Profil modifie avec succes");
+
+    }
+
+
+
     return (
         <>
             <Sidebar />
             <Navbar />
-            <Form ref={formRef} onSubmit={res} className="rounded p-4 p-sm-3">
+            <Form ref={formRef} onSubmit={Update_profil} className="rounded p-4 p-sm-3">
 
-                <Form.Group className='mb-3' controlId='formBasicName'>
-                    <button type='button' onClick={handleSumit} style={{ borderRadius: 5, textAlign: 'center', margin: 10, padding: 10, color: 'white', backgroundColor: 'grey' }}>Photo de profil</button>
-                    <Avatar style={{ marginTop: 10, marginBottom: 10 }} src={url} sx={{ width: 150, height: 150 }} />
-                    <Form.Label className="labelForm">Sélection de la photo :</Form.Label>
-                    <Form.Control className="image-input" type="file" placeholder="Image" onChange={handleChangeImage} name='image' required></Form.Control>
-                </Form.Group>
                 <Form.Group className='mb-3' controlId='formBasicName'>
                     <Form.Label className="labelForm">Entrer votre nom :</Form.Label>
                     <Form.Control className="name-input" type="text" placeholder="eg :Jason Derulo" name="name" value={name} onChange={(e) => setName(e.target.value)} required></Form.Control>
@@ -168,22 +194,12 @@ export default function Profil(props) {
 
                 <Form.Group className='mb-3' controlId='formBasicNumber'>
                     <Form.Label className="labelForm">Entrer votre adresse e-mail:</Form.Label>
-                    <Form.Control className="price-input" type="e-mail" placeholder=" eg: mbengivan63@gmail.com" name="Email" value={Email} onChange={(e) => setEmail(e.target.value)} ></Form.Control>
+                    <Form.Control className="price-input" type="e-mail" placeholder=" eg: bibliothecaire18@gmail.com" name="Email" value={Email} onChange={(e) => setEmail(e.target.value)} ></Form.Control>
                 </Form.Group>
 
-
                 <Form.Group className='mb-3' controlId='formBasicName'>
-                    <Form.Label className="labelForm">Entrez le genre: <i>(homme/femme)</i></Form.Label>
-                    <Form.Select className="name-input" aria-label="Default select example" type="text" name='cathegorie' onChange={(e) => setTyp(e.target.value)} required>
-                        <option value='Homme'>Homme</option>
-                        <option value='Femme'>Femme</option>
-                    </Form.Select>
-                </Form.Group>
-
-
-                <Form.Group className='mb-3' controlId='formBasicName'>
-                    <Form.Label className="labelForm">Entrer une brève description de vous même:</Form.Label>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Desciption" value={desc} onChange={(e) => setDesc(e.target.value)} name='desc'></textarea>
+                    <Form.Label className="labelForm">Entrer un mot de passe:</Form.Label>
+                    <Form.Control className="password-input" type="password" placeholder="eg :Jason1234" value={password} onChange={(e) => setPassword(e.target.value)} name='password'></Form.Control>
                 </Form.Group>
 
                 <ReactJsAlert
@@ -195,7 +211,7 @@ export default function Profil(props) {
                     Close={() => setStatus(false)}
                 />
                 {/* <button type='button' onClick={res} className='btn-btn-primary' style={{borderRadius:5,textAlign:'center', padding:10,color:'white',backgroundColor:'red'}}>Ajouter</button> */}
-                <button type='button' onClick={() => navigate("/")} className='btn-btn-primary' style={{ borderRadius: 5, textAlign: 'center', padding: 10, color: 'white', backgroundColor: 'green' }}>Valider</button>
+                <button type='button' onClick={() =>  navigate("/accueil") } className='btn-btn-primary' style={{ borderRadius: 5, textAlign: 'center', padding: 10, color: 'white', backgroundColor: 'green' }}>Valider</button>
 
 
             </Form>

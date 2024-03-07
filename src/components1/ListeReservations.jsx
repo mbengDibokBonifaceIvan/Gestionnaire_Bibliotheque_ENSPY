@@ -8,42 +8,79 @@ import Navbar from '../components1/Navbar';
 //import Timer1 from "../Component Improvements/Timer1";
 import { FaClock } from 'react-icons/fa';
 
+
+    //update
+    function updates(dos){
+      const ref = firebase.firestore().collection("BiblioUser")
+      if( dos.etat == 'bloc'){
+      ref
+      .doc(dos.email)
+      .update({etat:'ras'})
+      .catch((err)=>{
+        console.log(err)
+      })}
+    
+      if( dos.etat != 'bloc'){
+        ref
+        .doc(dos.email)
+        .update({etat:'bloc'})
+        .catch((err)=>{
+          console.log(err)
+        })}
+      
+    }
+    //fin update
+    
+
+
+
+
+
 const Timer1 = () => {
-  const [timeRemaining, setTimeRemaining] = useState(3 * 24 * 60 * 60); // 3 jours en secondes
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      // setVariable('nouvelle valeur après 3 jours');
-    }, 3 * 24 * 60 * 60 * 1000); // 3 jours en millisecondes
+  //const ref = firebase.firestore().collection("BiblioUser");
 
-    const interval = setInterval(() => {
-      setTimeRemaining((prevTime) => prevTime - 1);
-    }, 1000); // Mise à jour toutes les secondes
+   const [timeRemaining, setTimeRemaining] = useState(3 * 24 * 60 * 60); // 3 jours en secondes
+ 
+   useEffect(() => {
+ 
+ 
+     const interval = setInterval(() => {
+       setTimeRemaining((prevTime) => prevTime - 1);
+     }, 1000); // Mise à jour toutes les secondes
+ 
+     const timer = setTimeout(() => {
+     //  setVariable('nouvelle valeur après 3 jours');
+     interval();
+     }, 3 * 24 * 60 * 60 * 1000); // 3 jours en millisecondes
+ 
+ 
+     return () => {
+       clearTimeout(timer);
+       clearInterval(interval);
+     };
+   }, []);
+ 
 
-    return () => {
-      clearTimeout(timer);
-      clearInterval(interval);
-    };
-  }, []);
 
-  const formatTime = (seconds) => {
-    const days = Math.floor(seconds / (24 * 60 * 60));
-    const hours = Math.floor((seconds % (24 * 60 * 60)) / (60 * 60));
-    const minutes = Math.floor((seconds % (60 * 60)) / 60);
-    const remainingSeconds = seconds % 60;
-
-    return `${days}j ${hours}h ${minutes}m ${remainingSeconds}s`;
-  };
-
-  return (
-    <div>
-      {/* <p>Valeur actuelle de la variable : {variable}</p> */}
-      <p style={{color:"gray"}}>Temps restant : {formatTime(timeRemaining)}</p>
-      <FaClock size={15} />
-    </div>
-  );
-};
-
+   const formatTime = (seconds) => {
+     const days = Math.floor(seconds / (24 * 60 * 60));
+     const hours = Math.floor((seconds % (24 * 60 * 60)) / (60 * 60));
+     const minutes = Math.floor((seconds % (60 * 60)) / 60);
+     const remainingSeconds = seconds % 60;
+     return `${days}j ${hours}h ${minutes}m ${remainingSeconds}s`;
+   };
+ 
+   return (
+     <div>
+       _{/**<p>Valeur actuelle de la variable : {variable}</p> */}
+       
+       <p>Delai: {formatTime(timeRemaining)}</p>
+       <FaClock size={15} />
+     </div>
+   );
+ };
+ 
 
 function ListeReservations() {
 
@@ -195,7 +232,7 @@ function ListeReservations() {
                           {/** (timeRemaining == 0) ? etudiant.etat = "bloc";
                       */}       
                           {doc.etat1 === 'reserv' ?
-                            <Button
+                            <Button title="Confirmer la reservation de l etudiant ici"
                               style={{ backgroundColor: 'green', marginTop: '10px', fontWeight: 'bold' }}
                               variant="secondary"
                               className="btn-sm"
@@ -219,7 +256,7 @@ function ListeReservations() {
                        
                         <div>
                           {doc.etat2 === 'reserv' ?
-                            <Button
+                            <Button title="Confirmer la reservation de l etudiant ici"
                               style={{ backgroundColor: 'green', marginTop: '10px', fontWeight: 'bold' }}
                               variant="secondary"
                               className="btn-sm"
@@ -242,7 +279,7 @@ function ListeReservations() {
 
                         <div>
                           {doc.etat3 === 'reserv' ?
-                            <Button
+                            <Button title="Confirmer la reservation de l etudiant ici"
                               style={{ backgroundColor: 'green', marginTop: '10px', fontWeight: 'bold' }}
                               variant="secondary"
                               className="btn-sm"

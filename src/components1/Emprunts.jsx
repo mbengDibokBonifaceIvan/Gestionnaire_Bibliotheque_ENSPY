@@ -6,7 +6,7 @@ import styled from "styled-components";
 import Loading from "./Loading";
 import Sidebar from '../components1/Sidebar';
 import Navbar from '../components1/Navbar';
-
+import { FaClock } from 'react-icons/fa';
 
 
 
@@ -186,6 +186,67 @@ refDoc
 }          
 }
 
+
+
+
+
+
+const Timer2= () => {
+
+  const ref = firebase.firestore().collection("BiblioUser");
+
+   const [timeRemaining, setTimeRemaining] = useState(14 * 24 * 60 * 60); // 14 jours en secondes
+ 
+   useEffect(() => {
+ 
+     const interval = setInterval(() => {
+       setTimeRemaining((prevTime) => prevTime - 1);
+     }, 1000); // Mise à jour toutes les secondes
+ 
+     const timer = setTimeout(() => {
+     interval();
+     }, 14 * 24 * 60 * 60 * 1000); // 14 jours en millisecondes
+ 
+ 
+     return () => {
+       clearTimeout(timer);
+       clearInterval(interval);
+     };
+   }, []);
+ 
+{/*const blocage_automatique =(doc) => {
+
+  if( timeRemaining === 0){
+    doc.etat = 'bloc';
+}; */}
+
+   const formatTime = (seconds) => {
+     const days = Math.floor(seconds / (24 * 60 * 60));
+     const hours = Math.floor((seconds % (24 * 60 * 60)) / (60 * 60));
+     const minutes = Math.floor((seconds % (60 * 60)) / 60);
+     const remainingSeconds = seconds % 60;
+    // blocage_automatique(remainingSeconds);// Pour bloquer l etdudiant s il ne remet pas le document a temps
+     return `${days}j ${hours}h ${minutes}m ${remainingSeconds}s`;
+   };
+
+   
+const blocage_automatique =(doc) => {
+
+  if( timeRemaining === 0){
+    doc.etat = 'bloc';
+};
+
+   return (
+     <div>
+       _{/**<p>Valeur actuelle de la variable : {variable}</p> */}
+       
+       <p>Delai: {formatTime(timeRemaining)}</p>
+       <FaClock size={15} />
+     </div>
+   );
+ };
+ 
+
     return (
       <>
       <Sidebar />
@@ -221,13 +282,13 @@ refDoc
               </h6>
                 <div>
                   { doc.etat1 === 'emprunt' ? 
-                      <Button
+                      <Button title='Confirmer la remise du document par l etudiant ici'
                       style={{backgroundColor:'green', marginTop:'10px', fontWeight:'bold'}}
                       variant="secondary"
                           className="btn-sm"
                           onClick={()=>{remis1(doc)}}
                         >
-                        Remis
+                        Valider
                         </Button>
                         : "Le document a déjà été remis."}</div>
             </td>
@@ -240,13 +301,13 @@ refDoc
               </h6>
                 <div>
                   { doc.etat2 === 'emprunt' ? 
-                      <Button
+                      <Button title='Confirmer la remise du document par l etudiant ici'
                       style={{backgroundColor:'green', marginTop:'10px', fontWeight:'bold'}}
                       variant="secondary"
                           className="btn-sm"
                           onClick={()=>{remis2(doc)}}
                         >
-                        Remis
+                        Valider
                         </Button>
                         :  "Le document a déjà été remis."}</div>
             </td>
@@ -259,19 +320,19 @@ refDoc
               </h6>
                 <div>
                   { doc.etat3 === 'emprunt' ? 
-                      <Button
+                      <Button title='Confirmer la remise du document par l etudiant ici'
                       style={{backgroundColor:'green', marginTop:'10px', fontWeight:'bold'}}
                           variant="secondary"
                           className="btn-sm"
                           onClick={()=>{remis3(doc)}}
                         >
-                        Remis
+                        Valider
                         </Button>
                         :  "Le document a déjà été remis."}</div>
             </td>
             
-            
-            <td>{doc.etat}</td>
+            <td > {blocage_automatique(doc)}</td>
+            {/*<td>{doc.etat}</td>*/}
           </tr>
           )})}
         </tbody>
@@ -280,7 +341,7 @@ refDoc
       </>
     );
   }
-  
+}
   export default Emprunts;
 
   const Section = styled.section`
