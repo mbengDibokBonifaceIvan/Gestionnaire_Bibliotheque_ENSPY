@@ -1,14 +1,19 @@
-import React, { useState } from 'react';
-import { Button, Modal, Form } from 'react-bootstrap';
+import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Avatar from '@mui/material/Avatar';
+import { Button, Modal, Form } from 'react-bootstrap';
 import { FaBook, FaPlus } from 'react-icons/fa';
 import img1 from '../assets/img1.jpg';
-
+import firebase from '../metro.config';
+import { storage } from "../firebase-config";
+import { ref, uploadBytes, getDownloadURL, getStorage, uploadBytesResumable } from "firebase/storage"
+import { v4 } from "uuid"
+import ReactJsAlert from "reactjs-alert";
 export default function DepartementMemoriesBtn(props) {
   const [isHovered, setIsHovered] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
-  const { nom_du_departement } = props;
+  const { nom_du_departement, myimage } = props;
   const [formValues, setFormValues] = useState({
     titre: '',
     nombreExemplaires: 0,
@@ -17,9 +22,49 @@ export default function DepartementMemoriesBtn(props) {
     description: '',
   });
 
+  const [status, setStatus] = useState(false);
+  const [type, setType] = useState("");
+  const [title, setTitle] = useState("");
+  const [name, setName] = useState('')
+    const [matricule, setMatricule] = useState('')
+    const [theme, setTheme] = useState('')
+    const [département, setDépartement] = useState('');
+    const [annee, setAnnee] = useState('')
+    const [etagere, setEtagere] = useState('')
+    const [url, setUrl] = useState(null);
+    const [image, setImage] = useState('');
+  const res = async function () {
+    await firebase.firestore().collection('Memoire').doc(matricule).set({
+        name: name,
+        matricule: matricule,
+        theme: theme,
+        département: département,
+        annee: parseInt(annee),
+        etagere: etagere,
+        image: image,
+        
+        
+        
+        
+        commentaire: [
+            {
+                heure: new Date(),
+                nomUser: '',
+                texte: '',
+                note: 0
+            }
+        ]
+    })
+    setStatus(true);
+    setType("success");
+    setTitle("Mémoire ajouté avec succes");
+    navigate("/catalogueMemoire", { state: { département:  nom_du_departement } })
+
+}
+
   const handleVisualiser = () => {
     // Redirection vers la page catalogue avec le nom du département
-    navigate('/catalogue', { state: { departement: nom_du_departement } });
+    navigate('/catalogueMemoire', { state: { département: nom_du_departement } });
   };
 
   const handleAjouter = () => {
@@ -62,13 +107,13 @@ export default function DepartementMemoriesBtn(props) {
 
   // Style du cadre parent
   const parentCardStyle = {
-    width: '200px',
+    width: '350px',
     margin: '0 auto', // Centrer horizontalement
     textAlign: 'center',
   };
 
   const cardStyle = {
-    backgroundImage: `url(${img1})`,
+    backgroundImage: `url(${myimage})`,
     backgroundSize: 'cover',
     width: '200px',
     height: '200px',
@@ -105,7 +150,7 @@ export default function DepartementMemoriesBtn(props) {
   const buttonVisualiserStyle = {
     width: '80px', // Réduire la largeur du bouton Visualiser
     fontSize: '0.8rem', // Réduire la taille de la police du bouton Visualiser
-    backgroundColor: isHovered ? 'blue' : 'primary', // Couleur bleue pour le bouton "Visualiser"
+    backgroundColor:'#fe7a3f',
     borderColor: 'transparent',
     display: 'flex',
     alignItems: 'center',
@@ -121,21 +166,29 @@ export default function DepartementMemoriesBtn(props) {
     fontSize: '1.5rem',
     marginRight: '5px',
   };
+  const bookIconStyle1 = {
+    fontSize: '40px',
+    marginRight: '10px',
+    color:"gray",
+    marginBottom: '10px',
+    
+  };
 
   return (
-    <div style={parentCardStyle}>
-      <div
-        className="card"
-        style={cardStyle}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      >
-        <div className="card-body">
-          <h4>
-            <FaBook style={bookIconStyle} /> <span className="text-dark">{nom_du_departement}</span>
-          </h4>
-        </div>
-      </div>
+    <div style={parentCardStyle} className='bg-light'>
+
+    <h4>
+      <FaBook style={bookIconStyle} className='text-danger'/> <span className="text-dark">{nom_du_departement}</span>
+    </h4>
+  
+<div
+  className="card"
+  style={cardStyle}
+  onMouseEnter={handleMouseEnter}
+  onMouseLeave={handleMouseLeave}
+>
+  
+</div>
       <div style={buttonContainerStyle}>
         <Button variant="primary" onClick={handleVisualiser} style={buttonVisualiserStyle}>
           Visualiser
@@ -147,64 +200,56 @@ export default function DepartementMemoriesBtn(props) {
 
       <Modal show={showModal} onHide={handleModalClose} style={{ backgroundColor: 'transparent' }}>
         <Modal.Header closeButton>
-          <Modal.Title className='text-center'><h2 className='text-center'>Ajouter un mémoire</h2></Modal.Title>
+          <Modal.Title className='text-center'><h2 className='text-center'>Ajouter Mémoire de {nom_du_departement}</h2></Modal.Title>
         </Modal.Header>
         <Modal.Body>
+        <Form.Group className='mb-3' controlId='formBasicName'>
+        <Form.Label className="labelForm">Nom de l'etudiant </Form.Label>
+                    <Form.Control className="name-input" type="text" placeholder="name" name="name" value={name} onChange={(e) => setName(e.target.value)} required></Form.Control>
+                </Form.Group>
           <Form onSubmit={handleFormSubmit}>
-            <Form.Group controlId="formTitre">
-              <Form.Label>Titre</Form.Label>
-              <Form.Control
-                type="text"
-                name="titre"
-                value={formValues.titre}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-
-            <Form.Group controlId="formNombreExemplaires">
-              <Form.Label>Nombre d'exemplaires</Form.Label>
-              <Form.Control
-                type="number"
-                name="nombreExemplaires"
-                value={formValues.nombreExemplaires}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-
-            <Form.Group controlId="formDepartement">
-              <Form.Label>Département</Form.Label>
+          <Form.Group className='mb-3' controlId='formBasicName'>
+                    <Form.Label className="labelForm">Département </Form.Label>
               <Form.Control
                 type="text"
                 name="departement"
-                value={formValues.departement}
-                onChange={handleInputChange}
+                
+                value={nom_du_departement}
+
+                onChange={(e) => setDépartement(e.target.value)}
+                required
               />
             </Form.Group>
+          <Form.Group className='mb-3' controlId='formBasicNumber'>
+                    <Form.Label className="labelForm">Matricule de l'etudiant </Form.Label>
+                    <Form.Control className="name-input" type="text" placeholder="20P123" name="matricule" value={matricule} onChange={(e) => setMatricule(e.target.value)} required></Form.Control>
+                </Form.Group>
+                <Form.Group className='mb-3' controlId='formBasicName'>
+                    <Form.Label className="labelForm">Theme de soutenance</Form.Label>
+                    <Form.Control className="name-input" type="text" placeholder="Gestion de la bibliotheque" name="theme" value={theme} onChange={(e) => setTheme(e.target.value)} required></Form.Control>
+                </Form.Group>
+                <Form.Group className='mb-3' controlId='formBasicName'>
+                    <Form.Label className="labelForm">Année de soutenance</Form.Label>
+                    <Form.Control className="name-input" type="number" placeholder="2025" value={annee} onChange={(e) => setAnnee(e.target.value)} name='etagere' required></Form.Control>
+                </Form.Group>
+                <Form.Group className='mb-3' controlId='formBasicName'>
+                    {/*<button type='button' onClick={handleSumit} style={{ borderRadius: 5, textAlign: 'center', padding: 10, color: 'white', backgroundColor: 'grey' }}>Img</button>*/}
+                    <FaBook style={bookIconStyle1} />
+                    <Form.Label className="labelForm">Entrer le lien de l'image</Form.Label>
+                    <Form.Control className="image-input" type="text" placeholder="Image" value={image} onChange={(e) => setImage(e.target.value)} name='image' required></Form.Control>
+                </Form.Group>
+                <ReactJsAlert
+                    status={status} // true or false
+                    type={type} // success, warning, error, info
+                    title={title}
+                    quotes={true}
+                    quote=""
+                    Close={() => setStatus(false)}
+                />
+            {/* <button type='button' onClick={res} className='btn-btn-primary' style={{borderRadius:5,textAlign:'center', padding:10,color:'white',backgroundColor:'green'}}>Ajouter</button> */}
+            <button type='button' onClick={res} className='btn-btn-primary' style={{ borderRadius: 5, textAlign: 'center', padding: 10, color: 'white', backgroundColor: 'green', alignContent: 'center' }}>Ajouter</button>
 
-            <Form.Group controlId="formEtagere">
-              <Form.Label>Étagère</Form.Label>
-              <Form.Control
-                type="text"
-                name="etagere"
-                value={formValues.etagere}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-
-            <Form.Group controlId="formDescription">
-              <Form.Label>Description</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={3}
-                name="description"
-                value={formValues.description}
-                onChange={handleInputChange}
-              />
-            </Form.Group>
-
-            <Button variant="success" type="submit" className='mt-3' style={buttonAjouterStyle}>
-              Ajouter
-            </Button>
+       
           </Form>
         </Modal.Body>
       </Modal>

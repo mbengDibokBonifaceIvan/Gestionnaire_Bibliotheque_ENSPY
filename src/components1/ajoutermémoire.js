@@ -6,25 +6,22 @@ import firebase from '../metro.config';
 import { storage } from "../firebase-config";
 import { ref, uploadBytes, getDownloadURL, getStorage, uploadBytesResumable } from "firebase/storage"
 import { v4 } from "uuid"
-import Avatar from '@mui/material/Avatar';
 import { useNavigate } from "react-router-dom";
 import Sidebar from '../components1/Sidebar';
 import Navbar from '../components1/Navbar';
 import { FaBook } from "react-icons/fa";
 
-export default function AjoutDoc(props) {
+export default function Ajoutermémoirec () {
     //   const [email, setEmail] = useState('');
     const [name, setName] = useState('')
-    const [catégorie, setCatégorie] = useState('')
-    const [cathegorie, setCathegorie] = useState('');
-    const [desc, setDesc] = useState('')
+    const [matricule, setMatricule] = useState('')
+    const [theme, setTheme] = useState('')
+    const [département, setDépartement] = useState('');
+    const [annee, setAnnee] = useState('')
     const [etagere, setEtagere] = useState('')
-    const [exemplaire, setExemplaire] = useState(1)
-    const [image, setImage] = useState(null)
-    const [pdf, setPdf] = useState(null)
-    const [url, setUrl] = useState(null)
-    const [salle, setSalle] = useState('')
-    const [typ, setTyp] = useState('')
+    const [url, setUrl] = useState(null);
+    const [image, setImage] = useState('');
+
     const formRef = useRef()
 
     const handleChangeImage = (e) => {
@@ -55,28 +52,23 @@ export default function AjoutDoc(props) {
 
     const navigate = useNavigate();
 
-    const bookIconStyle = {
-        fontSize: '40px',
-        marginRight: '10px',
-        color:"gray",
-        marginBottom: '10px',
-        
-      };
-    
+
 
 
     // Add a new document in collection "cities" with ID 'LA'
     const res = async function () {
-        await firebase.firestore().collection('BiblioInformatique').doc(name).set({
+        await firebase.firestore().collection('Memoire').doc(matricule).set({
             name: name,
-            exemplaire: parseInt(exemplaire),
+            matricule: matricule,
+            theme: theme,
+            département: département,
+            annee: parseInt(annee),
             etagere: etagere,
-            salle: salle,
             image: image,
-            type: typ,
-            nomBD: name,
-            cathegorie: cathegorie,
-            desc: desc,
+            
+            
+            
+            
             commentaire: [
                 {
                     heure: new Date(),
@@ -88,8 +80,8 @@ export default function AjoutDoc(props) {
         })
         setStatus(true);
         setType("success");
-        setTitle("Document ajouté avec succes");
-        navigate("/catalogue", { state: { departement: cathegorie } })
+        setTitle("Mémoire ajouté avec succes");
+        navigate("/catalogueMemoire", { state: { département: département } })
 
     }
 
@@ -114,6 +106,15 @@ export default function AjoutDoc(props) {
     }
 
 
+    
+    const bookIconStyle = {
+        fontSize: '40px',
+        marginRight: '10px',
+        color:"gray",
+        marginBottom: '10px',
+        
+      };
+    
 
 
     //fin formulaire
@@ -135,11 +136,11 @@ export default function AjoutDoc(props) {
 
     //ajouter
     function ajouter() {
-        const ref = firebase.firestore().collection("BiblioInformatique")
+        const ref = firebase.firestore().collection("Memoire")
 
         ref
             .doc('anna')
-            .set({ name: inputs.name, exemplaires: inputs.exemplaire, cathegorie: inputs.cathegorie, salle: inputs.salle, etagere: inputs.etagere, description: inputs.desc, image: inputs.image })
+            .set({ name: inputs.name, matricule: inputs.matricule, département: inputs.département, etagere: inputs.etagere, annee: inputs.annee, theme: inputs.theme,  image: inputs.image})
             .catch((err) => {
                 console.log(err)
             })
@@ -203,55 +204,48 @@ export default function AjoutDoc(props) {
             
             <Row style={{display: 'flex',
         justifyContent: 'space-around', marginTop: '35px', marginBottom: '20px'}}>
-            <Button  style={buttonVisualiserStyle}>
+            <Button  style={buttonVisualiserStyle} onClick={()=>navigate('/ajouterDoc')}>
             Livre
           </Button>
-          <Button variant="success"  style={buttonAjouterStyle} onClick={()=>navigate('/ajoutermémoire')}>
+          <Button variant="success"  style={buttonAjouterStyle} >
            Memoire
           </Button>
           </Row>
             <Form ref={formRef} onSubmit={res} className="rounded p-4 p-sm-3">
                 <Form.Group className='mb-3' controlId='formBasicName'>
-                    <Form.Label className="labelForm">Entrer le nom du Livre </Form.Label>
+                    <Form.Label className="labelForm">Nom de l'etudiant </Form.Label>
                     <Form.Control className="name-input" type="text" placeholder="name" name="name" value={name} onChange={(e) => setName(e.target.value)} required></Form.Control>
                 </Form.Group>
                 
                 <Form.Group className='mb-3' controlId='formBasicNumber'>
-                    <Form.Label className="labelForm">Entrer le nombre d'exemplaire</Form.Label>
-                    <Form.Control className="price-input" type="number" placeholder="Nombre d'exemplaires" name="exemplaire" value={exemplaire} onChange={(e) => setExemplaire(e.target.value)} ></Form.Control>
+                    <Form.Label className="labelForm"> Matricule de l'etudiant </Form.Label>
+                    <Form.Control className="name-input" type="text" placeholder="20P123" name="matricule" value={matricule} onChange={(e) => setMatricule(e.target.value)} required></Form.Control>
                 </Form.Group>
                 <Form.Group className='mb-3' controlId='formBasicName'>
-                    <Form.Label className="labelForm">Choisir le département</Form.Label>
-                    <Form.Select className="name-input" aria-label="Default select example" type="text" placeholder="departement" name='cathegorie' onChange={(e) => setCathegorie(e.target.value)} required>
+                    <Form.Label className="labelForm">Theme de soutenance </Form.Label>
+                    <Form.Control className="name-input" type="text" placeholder="Gestion de la bibliotheque" name="theme" value={theme} onChange={(e) => setTheme(e.target.value)} required></Form.Control>
+                </Form.Group>
+                <Form.Group className='mb-3' controlId='formBasicName'>
+                    <Form.Label className="labelForm">Entrer le département</Form.Label>
+                    <Form.Select className="name-input" aria-label="Default select example"  placeholder="Genie informatique" type="text" name='département' onChange={(e) => setDépartement(e.target.value)} required>
                        
-                        <option value='Mathematique'>MSP</option>
-                        <option value='Genie Informatique'>Genie Informatique</option>
+                        <option value='Genie Informatique' >Genie Informatique</option>
                         <option value="Genie Civile">Genie Civile</option>
                         <option value='Genie Electrique'>Genie Electrique </option>
                         <option value='Genie Mecanique'>Genie Mecanique/Industriel </option>
-                        <option value='Genie Telecom'>Genie telecom </option>
+                        <option value='Genie Telecom'>Génie Telecom </option>
                         
                        
                     </Form.Select>
                 </Form.Group>
-
-                <Form.Group className='mb-3' controlId='formBasicNumber'>
-                    <Form.Label className="labelForm">Entrer le numero de salle</Form.Label>
-                    <Form.Select className="name-input" aria-label="Default select example" placeholder="Entrer la salle" name="salle" value={salle} onChange={(e) => setSalle(e.target.value)} required>
-                        
-                        <option value='1'selected>1</option>
-                        <option value='2'>2</option>
-                        <option value='3'>3</option>
-                        <option value='4'>4</option>
-                    </Form.Select>
+                <Form.Group className='mb-3' controlId='formBasicName'>
+                    <Form.Label className="labelForm">Année de soutenance</Form.Label>
+                    <Form.Control className="name-input" type="number" placeholder="2025" value={annee} onChange={(e) => setAnnee(e.target.value)} name='etagere' required></Form.Control>
                 </Form.Group>
+               
                 <Form.Group className='mb-3' controlId='formBasicName'>
                     <Form.Label className="labelForm">Numéro de l'Etagère</Form.Label>
                     <Form.Control className="name-input" type="text" placeholder="Etagère" value={etagere} onChange={(e) => setEtagere(e.target.value)} name='etagere' required></Form.Control>
-                </Form.Group>
-                <Form.Group className='mb-3' controlId='formBasicName'>
-                    <Form.Label className="labelForm">Entrer la description du document</Form.Label>
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Desciption" value={desc} onChange={(e) => setDesc(e.target.value)} name='desc'></textarea>
                 </Form.Group>
                 <Form.Group className='mb-3' controlId='formBasicName'>
                     

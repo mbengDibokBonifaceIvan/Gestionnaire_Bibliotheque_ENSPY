@@ -13,7 +13,7 @@ import ReactJsAlert from "reactjs-alert";
 
 export default function DepartementMemoriesBtn(props) {
   const navigate = useNavigate();
-  const { nom_du_departement } = props;
+  const { nom_du_departement, myimage} = props ;
   const [isHovered, setIsHovered] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [formValues, setFormValues] = useState({
@@ -106,24 +106,9 @@ export default function DepartementMemoriesBtn(props) {
   }
 
  
-  const  resUdapte = async function(){
-    await firebase.firestore().collection('BiblioInformatique').doc(name).set({
-       name: null,
-       exemplaire:null ,
-       etagere:null,
-    
-      // image:url,
-       cathegorie:nom_du_departement,
-       desc:null,
-       image:null,
-       
-    })
-    
   
-   }
-
   const cardStyle = {
-    backgroundImage: `url(${img1})`,
+    backgroundImage: `url(${myimage})`,
     backgroundSize: 'cover',
     width: '300px',
     height: '200px',
@@ -139,6 +124,7 @@ export default function DepartementMemoriesBtn(props) {
     margin: '0 auto', // Centrer horizontalement
     borderradius:'45px',
   };
+
 
   const buttonContainerStyle = {
     display: 'flex',
@@ -162,12 +148,13 @@ export default function DepartementMemoriesBtn(props) {
 
   const buttonVisualiserStyle = {
     width: '100px',
-    backgroundColor: isHovered ? 'blue' : 'primary', // Couleur bleue pour le bouton "Visualiser"
+    backgroundColor: '#fe7a3f', // Couleur bleue pour le bouton "Visualiser"
     borderColor: 'transparent',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-around',
     padding: '5px',
+
   };
 
   const iconStyle = {
@@ -179,6 +166,13 @@ export default function DepartementMemoriesBtn(props) {
     marginRight: '5px',
   };
 
+  const bookIconStyle1 = {
+    fontSize: '40px',
+    marginRight: '10px',
+    color:"gray",
+    marginBottom: '10px',
+    
+  };
   
   const [inputs, setInputs] = useState({});
 
@@ -206,7 +200,40 @@ export default function DepartementMemoriesBtn(props) {
 
     console.log("ajouter", inputs)
 }
+
+const res = async function () {
+  await firebase.firestore().collection('BiblioInformatique').doc(name).set({
+      name: name,
+      exemplaire: parseInt(exemplaire),
+      etagere: etagere,
+      salle: salle,
+      image: image,
+      type: typ,
+      nomBD: name,
+      cathegorie: nom_du_departement,
+      desc: desc,
+      commentaire: [
+          {
+              heure: new Date(),
+              nomUser: '',
+              texte: '',
+              note: 0
+          }
+      ]
+  })
+  setStatus(true);
+  setType("success");
+  setTitle("Document ajouté avec succes");
+  navigate("/catalogue", { state: { departement: nom_du_departement } });
+}
+
+
   return (
+    <div className="border border-dadius border-solid-2 p-2 bg-light">
+      <h4 className="text-center">
+      <FaBook style={bookIconStyle} /> <span className="text-dark">{nom_du_departement}</span>
+    </h4>
+    
     <div
       className="card"
       style={cardStyle}
@@ -222,9 +249,6 @@ export default function DepartementMemoriesBtn(props) {
             <FaPlus style={iconStyle} /> Ajouter
           </Button>
         </div>
-        <h4>
-          <FaBook style={bookIconStyle} /> <span className="text-dark">{nom_du_departement}</span>
-        </h4>
       </div>
       <Modal show={showModal} onHide={handleModalClose} style={{ backgroundColor: 'transparent' }}>
         <Modal.Header closeButton>
@@ -241,8 +265,11 @@ export default function DepartementMemoriesBtn(props) {
               <Form.Control
                 type="text"
                 name="departement"
-                value={formValues.departement}
-                onChange={(e) => setExemplaire(e.target.value)}
+                
+                value={nom_du_departement}
+
+                onChange={(e) => setCathegorie(e.target.value)}
+                required
               />
             </Form.Group>
           <Form.Group className='mb-3' controlId='formBasicNumber'>
@@ -258,10 +285,10 @@ export default function DepartementMemoriesBtn(props) {
                     <textarea class="form-control" id="exampleFormControlTextarea1" rows="2" placeholder="Desciption" value={desc} onChange={(e) => setDesc(e.target.value)} name='desc'></textarea>
                 </Form.Group>
                 <Form.Group className='mb-3' controlId='formBasicName'>
-                    <button type='button' onClick={handleSumit} style={{ borderRadius: 5, textAlign: 'center', padding: 10, color: 'white', backgroundColor: 'grey' }}>Img</button>
-                    <Avatar src={url} sx={{ width: 150, height: 150 }} />
+                    {/*<button type='button' onClick={handleSumit} style={{ borderRadius: 5, textAlign: 'center', padding: 10, color: 'white', backgroundColor: 'grey' }}>Img</button>*/}
+                    <FaBook style={bookIconStyle1} />
                     <Form.Label className="labelForm">Entrer le lien de l'image</Form.Label>
-                    <Form.Control className="image-input" type="file" placeholder="Image" onChange={handleChangeImage} name='image' required></Form.Control>
+                    <Form.Control className="image-input" type="text" placeholder="Image" value={image} onChange={(e) => setImage(e.target.value)} name='image' required></Form.Control>
                 </Form.Group>
                 <ReactJsAlert
                     status={status} // true or false
@@ -272,13 +299,14 @@ export default function DepartementMemoriesBtn(props) {
                     Close={() => setStatus(false)}
                 />
             {/* <button type='button' onClick={res} className='btn-btn-primary' style={{borderRadius:5,textAlign:'center', padding:10,color:'white',backgroundColor:'green'}}>Ajouter</button> */}
-            <button type='button' onClick={() => navigate("/catalogue")} className='btn-btn-primary' style={{ borderRadius: 5, textAlign: 'center', padding: 10, color: 'white', backgroundColor: 'green' }}>Ajouter</button>
+            <button type='button' onClick={res} className='btn-btn-primary' style={{ borderRadius: 5, textAlign: 'center', padding: 10, color: 'white', backgroundColor: 'green', alignContent: 'center' }}>Ajouter</button>
 
 
             
           </Form>
         </Modal.Body>
       </Modal>
+    </div>
     </div>
    
   );

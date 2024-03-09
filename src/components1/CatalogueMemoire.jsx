@@ -9,24 +9,30 @@ import { GrFormClose } from "react-icons/gr";
 import Pagination from "react-bootstrap/Pagination";
 import { useNavigate } from "react-router-dom";
 import Loading from "./Loading";
-
 import { useLocation } from 'react-router-dom';
-
+import { FaBook } from "react-icons/fa";
 import Sidebar from '../components1/Sidebar';
 import Navbar from '../components1/Navbar';
 import { Button, Form, Row } from "react-bootstrap";
 
-export default function Catalogue() {
+export default function CatalogueMemoire() {
 
   const location = useLocation();
   const { state } = location;
   //const departement = location.state.departement;
-  const  departement  = state ? state.departement: null;
+  const  departement  = state ? state.département: null;
   //const departement = location.state?.departement ?? null;
   const isDepartementNonNull = departement !== null ? 1 : 0;
 
-
   const navigate = useNavigate();
+
+  const bookIconStyle = {
+    fontSize: '40px',
+    marginRight: '10px',
+    color:"gray",
+    marginBottom: '10px',
+    
+  };
 
   const buttonAjouterStyle = {
     width: '120px',
@@ -63,12 +69,12 @@ const [type, setType] = useState("");
 const [title, setTitle] = useState("");
 
 function openModal(e) {
-    setNomBD(e.nomBD)
+    setMatricule(e.matricule)
     setName(e.name)
-    setExemplaire(e.exemplaire)
-    setCathegorie(e.cathegorie)
+    setAnnee(e.annee)
+    setDépartement(e.département)
     setEtagere(e.etagere)
-    setDesc(e.desc)
+    setTheme(e.theme)
     setComment(e.commentaire)
     setIsOpens(true);
     setImage(e.image)
@@ -134,18 +140,14 @@ const customStyles = {
 
   let subtitle;
   
-
   const [name, setName] = useState('')
-  const [nomBD, setNomBD] = useState('')
-  const [cathegorie, setCathegorie] = useState('')
-  const [desc, setDesc] = useState('')
+  const [matricule, setMatricule] = useState('')
+  const [theme, setTheme] = useState('')
+  const [département, setDépartement] = useState('');
+  const [annee, setAnnee] = useState('')
   const [etagere, setEtagere] = useState('')
-  const [exemplaire, setExemplaire] = useState(0)
-  const [image, setImage] = useState(null)
-  const [comment, setComment] = useState(null)
-  const [pdf, setPdf] = useState(null)
-  const [url, setUrl] = useState(null)
-  const [salle, setSalle] = useState('')
+  const [comment, setComment] = useState('')
+  const [image, setImage] = useState(null);
 const formRef = useRef()
   //fin modal 2
   
@@ -155,7 +157,7 @@ const formRef = useRef()
 
     //debut firebase
 
-    const ref = firebase.firestore().collection("BiblioInformatique")
+    const ref = firebase.firestore().collection("Memoire")
 
     const [data,setData]=useState([])
     const [loader,setLoader] = useState(false)
@@ -163,7 +165,7 @@ const formRef = useRef()
 
     function getData() {
       if (isDepartementNonNull) {
-        ref.where('cathegorie', '==', departement).onSnapshot((querySnapshot) => {
+        ref.where('département', '==', departement).onSnapshot((querySnapshot) => {
           const items = [];
           querySnapshot.forEach((doc) => {
             items.push(doc.data());
@@ -171,7 +173,7 @@ const formRef = useRef()
           });
           setData(items);
         });
-      } else {
+      } else  {
         ref.onSnapshot((querySnapshot) => {
           const items = [];
           querySnapshot.forEach((doc) => {
@@ -227,17 +229,16 @@ const formRef = useRef()
 
    // Add a new document in collection "cities" with ID 'LA'
 const  resUdapte = async function(){
-  await firebase.firestore().collection('BiblioInformatique').doc(nomBD).set({
-     name: name,
-     exemplaire:parseInt(exemplaire) ,
-     etagere:etagere,
-     salle:salle,
-    // image:url,
-     cathegorie:cathegorie,
-     desc:desc,
-     image:image,
-     nomBD:nomBD,
-     commentaire:comment
+  await firebase.firestore().collection('Memoire').doc(matricule).set({
+    name: name,
+    matricule: matricule,
+    theme: theme,
+    département: département,
+    annee: parseInt(annee),
+    etagere: etagere,
+    image: image,
+    commentaire:comment
+
   })
   setStatus(true);
   setType("success");
@@ -255,7 +256,7 @@ const  resUdapte = async function(){
 
 //delete
 const  deleteDoc = async function(){
-  await firebase.firestore().collection('BiblioInformatique').doc(nomBD).delete()
+  await firebase.firestore().collection('Memoire').doc(matricule).delete()
   setIsOpens(false);
 
 }
@@ -275,23 +276,24 @@ const  deleteDoc = async function(){
            Memoire
           </Button>
           </Row>
-    <h1 style={{textAlign: 'center', color: 'gray', marginTop:'10px', marginBottom:'20px' }}>Liste des Livres  {departement}</h1>
+    <h1 style={{textAlign: 'center', color: 'gray', marginTop:'10px', marginBottom:'20px' }}>Liste des Mémoires  {departement}</h1>
     <Section>
       {loader ? ( data.map((doc, index) =>{
        if(doc.name.toUpperCase().includes(searchWord.toUpperCase())){
         return(
-      <div className="analytic " key={index}>
-        <div className="content" onClick={()=>openModal(doc)}>
-          <h3>{doc.name}</h3>
-          <h6>Departement : {doc.cathegorie}</h6>
-          <h6>Exemplaire disponible: {doc.exemplaire}</h6>
-        </div>
-        <div className="logo">
-        <a href={doc.image}>
-          <img src={doc.image} />
-        </a> 
-        </div>
-      </div>
+            <div className="analytic " key={index}>
+            <div className="content" onClick={()=>openModal(doc)}>
+              <h3>{doc.theme}</h3>
+              <h4>{doc.name}</h4>
+              <h6>Departement : {doc.département}</h6>
+              <h6>Année de rédaction: {doc.annee}</h6>
+            </div>
+            <div className="logo">
+            <a href={doc.image}>
+              <img src={doc.image} />
+            </a> 
+            </div>
+          </div>
          )} }) ) :<Loading />    }
           <div>
                 <Modal
@@ -305,42 +307,31 @@ const  deleteDoc = async function(){
                     <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Modifier le document</h2>
                     
                     <form ref={formRef}  style={formClass}>
-          
-                <label className="labelForm" style={labelForm} htmlFor="name">Entrer le nouveau nom</label>
-                <input style={labelInput} id="name" type="text" placeholder={name} name="name" value={name} onChange = {(e) => setName(e.target.value)} />
-                <label className="labelForm" style={labelForm} htmlFor="exemp">Entrer le nouveau nombre d'exemplaire</label>
-                <input style={labelInput} id="exemp" type="text" placeholder="Nouveau nombre exemplaire..." name="exemplaire" value={exemplaire}  onChange={(e) => setExemplaire(e.target.value)} />
-                <label className="labelForm" style={labelForm} htmlFor="class">Entrer la nouvelle matière</label>
-                <select style={labelInput} id="class" type="text" placeholder="Nouvelle catégorie..." name='cathegorie' value={cathegorie} onChange={(e) => setCathegorie(e.target.value)} >
 
-                    <option value='Mathematique'>Mathematique</option>
-                    <option value='Physique'>Physique</option>
-                    <option value='Chimie'>Chimie</option>
-                    <option value='Génie Informatique'>Génie Informatique</option>
-                    <option value="Génie Civile">Génie Civile</option>
-                    <option value='Génie Electrique'>Génie Electrique </option>
-                    <option value='Génie Mecanique'>Génie Mecanique </option>
-                    <option value='Génie Telecom'>Génie telecom </option>
-                    <option value='Génie Electrique'>Génie electrique </option>
-                    <option value='Memoire GI'>Memoire Génie Informatique </option>
-                    <option value='Memoire GC'>Memoire Génie Civile </option>
-                    <option value='Memoire GELE '>Memoire Génie Electrique </option>
-                    <option value='Memoire GET'>Memoire Génie Telecom </option>
-                    <option value='Memoire GIndus'>Memoire Génie Industriel </option>
-                    <option value='Memoire GM'>Memoire Génie Mecanique </option>
+                    <label className="labelForm" style={labelForm} htmlFor="name">Entrer le nouveau nom</label>
+                <input style={labelInput} id="name" type="text" placeholder={name} name="name" value={name} onChange = {(e) => setName(e.target.value)} />
+                <label className="labelForm" style={labelForm} htmlFor="exemp">Entrer le nouveau matricule</label>
+                <input style={labelInput} id="exemp" type="text" placeholder="20P000" name="matricule" value={matricule}  onChange={(e) => setMatricule(e.target.value)} />
+                <label className="labelForm" style={labelForm} htmlFor="class">Entrer le nouveau département</label>
+                <select style={labelInput} id="class" type="text" placeholder="département" name='département' value={département} onChange={(e) => setDépartement(e.target.value)} required >
+   
+                        <option value='Genie Informatique' >Genie Informatique</option>
+                        <option value="Genie Civile">Genie Civile</option>
+                        <option value='Genie Electrique'>Genie Electrique </option>
+                        <option value='Genie Mecanique'>Genie Mecanique/Industriel </option>
+                        <option value='Genie Telecom'>Génie Telecom </option>
                 </select>
-                <label className="labelForm" style={labelForm} htmlFor="salle">Entrer son nouveau numero de salle</label>
-                <select style={labelInput} id="salle" type="text" placeholder="Nouvelle salle..." name="salle" value={salle}  onChange={(e) => setSalle(e.target.value)}>
-                    <option value=''></option>
-                    <option value='1'>1</option>
-                    <option value='2'>2</option>
-                    <option value='3'>3</option>
-                    <option value='4'>4</option>
-                </select>
-                <label className="labelForm" style={labelForm} htmlFor="etagere">Entrer la position de l'étagere</label>
+                
+
+                 <label className="labelForm" style={labelForm} htmlFor="etagere">Entrer la position de l'étagere</label>
                 <input style={labelInput} id="etagere" type="text" placeholder="Nouvelle etagère..." name="etagere" value={etagere} onChange = {(e) => setEtagere(e.target.value)} /> 
-                <label className="labelForm" style={labelForm} htmlFor="desc">Entrer la nouvelle description</label>
-                <textarea style={labelInput} id="etagere" type="desc" placeholder="Nouvelle description..." name="description" value={desc} onChange = {(e) => setDesc(e.target.value)} />       
+                <label className="labelForm" style={labelForm} htmlFor="desc">Entrer la nouvelle année</label>
+                <textarea style={labelInput} id="etagere" type="number" placeholder="2025" name="annee" value={annee} onChange = {(e) => setAnnee(e.target.value)} />  
+
+                <FaBook style={bookIconStyle} />
+                <label className="labelForm" style={labelForm} htmlFor="desc">Entrer le lien de l'image</label>
+                <textarea style={labelInput} id="etagere" type="number" placeholder="image/xxx/yyy"  value={image} onChange={(e) => setImage(e.target.value)} name='image' />  
+    
                 <ReactJsAlert
                     status={status} // true or false
                     type={type} // success, warning, error, info

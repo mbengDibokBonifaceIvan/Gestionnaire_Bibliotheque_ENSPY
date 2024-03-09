@@ -12,12 +12,12 @@ import img6 from '../assets/Msp.jpg';
 
 export default function DepartementsList() {
   const departements = [
-    "Genie informatique",
-    "Genie civil",
-    "Genie Telecomm",
-    "Genie electrique",
-    "Genie industriel mecanique",
-    "Département de MSP",
+    "Département 1",
+    "Département 2",
+    "Département 3",
+    "Département 4",
+    "Département 5",
+    "Département 6",
 
   ];
 

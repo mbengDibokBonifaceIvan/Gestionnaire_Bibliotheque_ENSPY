@@ -18,7 +18,7 @@ const Accueil = () => {
                 automatique en tout simplicité et en toute tranquilité.</p>
                 
                 <button  onClick={ ()=>navigate("/departement") }>Gestion des livres</button>
-                <button onClick={ ()=>navigate("/departement")}>Gestion des memoires</button>
+                <button onClick={ ()=>navigate("/departementMem")}>Gestion des memoires</button>
             </main>
 
 

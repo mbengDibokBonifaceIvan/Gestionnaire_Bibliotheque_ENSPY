@@ -29,7 +29,10 @@ import Profil from "./Component Improvements/Profil";
 import Cat from "./Component Improvements/catlivre";
 import Dept from "./Component Improvements/AdminBooksHome";
 import AdminMemoriesHome from "./components1/AdminMemoriesHome";
-
+import Ajoutermémoire from "./components1/ajoutermémoire";
+import CatalogueMemoire from "./components1/CatalogueMemoire";
+import DepartementMemoriesBtn from "./Component Improvements/DepartementBooksBtn";
+import DepartementsList from "./Component Improvements/AdminBooksHome";
 export const UserContext = createContext();
 
 export default function App() {
@@ -73,15 +76,17 @@ export default function App() {
               <Routes>
                 <Route path="/gestlivre" element={<Cat/>}/>
                 <Route path="/departement" element={<Dept/>} />
+                <Route path="/departementMem" element={<AdminMemoriesHome/>} />
                 <Route path="/" element={< Login />} />
                 <Route path="/registrationConfirmation" element={< RegistrationConfirmation />} />
                 <Route path="/registrationValidation" element={<RegistrationValidation />} />
                 <Route path="/gestmemoire" element={<AdminMemoriesHome />}/>
-
+                <Route path="/AdminBooks" element={<DepartementsList/>} />
                 <Route path="/profil" element={<Profil />} />
                 <Route path="/accueil" element={<Accueil />} />
                 <Route path="/listeEtudiant" element={<ListeEtudiants />} />
                 <Route path="/ajouterDoc" element={<AjoutDoc />} />
+                <Route path="/ajoutermémoire" element={<Ajoutermémoire/>} />
                 <Route path="/emprunts" element={<Emprunts />} />
                 <Route path="/listeReservation" element={<ListeReservations />} />
                 <Route path="/catalogue" element={<Catalogue />} />
@@ -92,10 +97,16 @@ export default function App() {
                 <Route path="/discuss" element={<Discussion />} />
                 <Route path="/logoutPage" element={<LogoutPage />} />
                 <Route path="/pagenation" element={<Pagenation />} />
+               <Route path="/catalogueMemoire" element={<CatalogueMemoire />} />
+               <Route path="/departementMemoriesBtn" element={<DepartementMemoriesBtn />} />
+
+
+               
                 <Route path="*" element={<NoPage />} />
               </Routes>
             </Section>
           </Router>
+          
         </Div>
       </UserContext.Provider>;
     </>
